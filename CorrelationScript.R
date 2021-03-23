@@ -11,7 +11,7 @@
 ### 1) TCGA data preparation
 ### 2) GO analysis of co-correlation genes with Tak1l
 ### 3) PGE2 production estimation models
-### 4) Cox regression anlaysis
+### 4) Cox regression analysis
 ###
 
 
@@ -73,16 +73,16 @@ tcgaExpressionActive = tcgaExpression[rowMeans(tcgaExpression) > 1, ]
 
 ### ============================================================================
 ###
-### 2) GO analysis of co-correlation genes with Tak1l
+### 2) GO analysis of co-correlation genes with TAK1L
 ###
 ### ============================================================================
 
 ### ----------------------------------------------------------------------------
-### Calculate all pairwise correlations to TaK1L
+### Calculate all pairwise correlations to TAK1L
 ### ----------------------------------------------------------------------------
 
 # select TAK1L properties
-tak1l = subset(tcgaGeneLink, Hugo_Symbol == "MAP3K7CL") # Tak1L
+tak1l = subset(tcgaGeneLink, Hugo_Symbol == "MAP3K7CL") # TAK1L
 tak1lExpression = log2(tcgaExpression[rownames(tcgaExpression) == tak1l$Entrez_Gene_Id, ] + 0.1) # add pseudocount
 
 # calculate pairwise correlation of TAK1L vs. all expressed genes
