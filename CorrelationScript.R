@@ -115,10 +115,10 @@ grid.arrange(pl$p1, pl$p2, pl$p3, pl$p4, ncol = 2, nrow = 2)
 
 
 ### ----------------------------------------------------------------------------
-### Enrichment anlaysis of Co-correlated subgroup
+### Enrichment analysis of co-correlated subgroup
 ### ----------------------------------------------------------------------------
 ###
-### calculate all-vs-all correlation among genes highly correlated to Tak1l
+### calculate all-vs-all correlation among genes highly correlated to TAK1L
 corrAll = subset(t(tcgaExpressionActive), select = rownames(corrSig))
 corrAll = log2(corrAll + 0.1) # transform to log2 space and add pseudocount
 corrAll = cor(corrAll, method = "pearson")
@@ -188,14 +188,14 @@ grid.arrange(p1, p3, ncol = 1)
 ### ============================================================================
 
 ### ----------------------------------------------------------------------------
-### PDGFRB based regression model to capture PGE2 production
+### PDGFRB-based regression model to capture PGE2 production
 ### ----------------------------------------------------------------------------
 
 # relevant gene names
 nameProd = c("PTGS1", "PTGS2", "PTGES", "PTGES2", "PTGES3", "HPGD")
 nameFibro = c("FAP", "COL1A1", "ACTA2", "PDGFRB", "S100A4", "SERPINH1")
 
-# construct dataframe for PGE2 producing genes
+# construct dataframe for PGE2-producing genes
 link = tcgaGeneLink[tcgaGeneLink$Hugo_Symbol %in% c(nameProd, "PDGFRB"), ]
 dataProd = tcgaExpressionActive[rownames(tcgaExpressionActive) %in% link$Entrez_Gene_Id, ] %>% t
 idx = match(colnames(dataProd), link$Entrez_Gene_Id)
@@ -208,7 +208,7 @@ modProd = lm(formula = PDGFRB ~ PTGS1 + PTGS2 + HPGD + PTGES + PTGES2 + PTGES3,
 combRes = cbind(dataProd, mPDGFRB = (modProd$fitted.values) * -1) # muliply with -1 to make the model caputre production, rather then degradation
 combRes = combRes[, -c(2)]
 
-#reorder
+# reorder
 colOrder = c("mPDGFRB", nameProd)
 combRes = combRes[, colOrder]
 
@@ -223,7 +223,7 @@ ggpairs(
 
 
 ### ----------------------------------------------------------------------------
-### PDGFRB based regression model agrees with other fibroblast markers
+### PDGFRB-based regression model agrees with other fibroblast markers
 ### ----------------------------------------------------------------------------
 
 # construct dataframe for fibroblast markers
@@ -251,7 +251,7 @@ ggpairs(
 
 ### ============================================================================
 ###
-### 4) Cox regression anlaysis
+### 4) Cox regression analysis
 ###
 ### ============================================================================
 
@@ -318,7 +318,7 @@ p1 = ggplot(df, aes(
     labs(tag = "A") +
     xlab(NULL) + ylab("Expression level [log2(TPM)]")
 
-# clculate and plot cox model
+# calculate and plot Cox model
 testData = cbind(clinData, log2(targetExpression + 0.01))
 mod = coxph(Surv(times, status) ~ PTGES + PTGES2 + PTGES3 + PTGS1 + PTGS2 + HPGD,
             data = testData)
